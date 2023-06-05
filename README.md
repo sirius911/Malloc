@@ -5,6 +5,31 @@ his project is about implementing a dynamic memory allocation mechanism.
 [Master Memory Management: Create Your Own malloc Library from Scratch](https://medium.com/a-42-journey/how-to-create-your-own-malloc-library-b86fedd39b96)
 
 Traduction : 
+
+Êtes-vous curieux de savoir comment fonctionne la mémoire allouée dynamiquement ? Je l'étais aussi, et j'ai donc décidé de construire ma propre implémentation de malloc.
+
+Dans cet article, je vais partager tout ce que vous devez savoir sur *malloc* - pourquoi il existe, comment il fonctionne, et comment le construire vous-même en utilisant les fonctions mmap/munmap et les algorithmes de gestion de la mémoire. J'ai même inclus mon projet terminé sur [GitHub](https://github.com/jterrazz/42-malloc) pour que vous puissiez vous y référer. Rejoignez-moi dans l'apprentissage de la gestion de la mémoire en construisant votre propre bibliothèque malloc ! 👷
+
+```c
+// nous allons implémenter ces méthodes
+void malloc(size_t size);
+void free(void ptr);
+void realloc(void ptr, size_t size);
+void calloc(size_t count, size_t size);
+
+// Autorise les appels à demander de la mémoire
+#include <sys/mman.h>
+
+void mmap(void addr, size_t len, int prot, int flags, int fd, off_t offset);
+int munmap(void addr, size_t len);
+
+// Appels autorisés pour limiter nos appels de mémoire
+#include <sys/resource.h>
+
+int getrlimit(int resource, struct rlimit rlp);
+int strlimit(int resource, const struct rlimit rlp);
+```
+
 ## La gestion de la mémoire
 Le langage C gère les variables en mémoire, mais il y a certaines limites à cela.
 
