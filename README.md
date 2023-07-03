@@ -12,10 +12,10 @@ Dans cet article, je vais partager tout ce que vous devez savoir sur *malloc* - 
 
 ```c
 // nous allons implémenter ces méthodes
-void malloc(size_t size);
-void free(void ptr);
-void realloc(void ptr, size_t size);
-void calloc(size_t count, size_t size);
+void *malloc(size_t size);
+void free(void *ptr);
+void *realloc(void *ptr, size_t size);
+void *calloc(size_t count, size_t size);
 
 // Autorise les appels à demander de la mémoire
 #include <sys/mman.h>
@@ -78,7 +78,7 @@ typedef struct s_heap {
     size_t          block_count;
 } t_heap;
 
-typdef struct s_block {
+typedef struct s_block {
     struct s_block  *prev;
     struct s_block  *next;
     size_t          data_size;
@@ -87,7 +87,7 @@ typdef struct s_block {
 ```
 En *enchaînant* les blocs avec les pointeurs *next* et *prev*, nous pouvons parcourir le tas et accéder à n'importe quel bloc. Les structures C ont toujours une taille fixe, que nous pouvons utiliser pour passer en toute sécurité d'un pointeur de métadonnées au début des données. Cela nous aide à gérer efficacement le tas et les blocs.
 ```c
-#define HEAP_START(start) ((void *)start + sizeof(t_heap))
+#define HEAP_SHIFT(start) ((void *)start + sizeof(t_heap))
 #define BLOCK_SHIFT(start) ((void *)start + sizeof(t_block))
 ```
 ### Performance
