@@ -6,7 +6,7 @@
 /*   By: clorin <clorin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 08:52:21 by clorin            #+#    #+#             */
-/*   Updated: 2023/07/03 10:41:17 by clorin           ###   ########.fr       */
+/*   Updated: 2023/07/05 10:42:51 by clorin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ static void	log_free(const char *event, int fd, size_t ptr, size_t size)
 static void	log_malloc(const char *event, int fd, size_t size, size_t result)
 {
 	ft_putstr_fd(event, fd);
-    ft_putnbr_fd((size_t)size, 10, fd, true);
-    ft_putstr_fd(" bytes -> ", fd);
+	ft_putnbr_fd((size_t)size, 10, fd, true);
+	ft_putstr_fd(" bytes -> ", fd);
 	ft_putnbr_fd((size_t)result, 16, fd, true);
 	ft_putstr_fd("\n", fd);
 }
@@ -41,7 +41,7 @@ static void	log_realloc(const char *event, int fd, size_t size, size_t ptr)
 {
 	ft_putstr_fd(event, fd);
 	if (size && ptr)
-    {
+	{
 		ft_putnbr_fd((size_t)ptr, 16, fd, true);
 		ft_putstr_fd(" : new size = ", fd);
 		ft_putnbr_fd((size_t)size, 10, fd, true);
@@ -49,12 +49,12 @@ static void	log_realloc(const char *event, int fd, size_t size, size_t ptr)
 	}
 	else
 	{
-		ft_putnbr_fd((size_t)ptr, 16, fd, true);	
+		ft_putnbr_fd((size_t)ptr, 16, fd, true);
 		ft_putstr_fd(" -> FAIL\n", fd);
 	}
 }
 
-static void log_mmap(const char *event, int fd, size_t size, size_t result)
+static void	log_mmap(const char *event, int fd, size_t size, size_t result)
 {
 	size_t			heap_size;
 	t_heap_group	heap_group;
@@ -85,10 +85,11 @@ void	log_report(int event, void *result, size_t size)
 
 	if (log_status())
 	{
-		if ((fd = open(LOGS_PATH, O_CREAT | O_WRONLY | O_APPEND, 0644)) == -1)
+		fd = open(LOGS_PATH, O_CREAT | O_WRONLY | O_APPEND, 0644);
+		if (fd == -1)
 			return ;
 		if (event == FREE || event == MUNMAP)
-            log_free(event_tab[event], fd, (size_t)size, (size_t)result);
+			log_free(event_tab[event], fd, (size_t)size, (size_t)result);
 		else if (event == MMAP)
 			log_mmap(event_tab[event], fd, (size_t)size, (size_t)result);
 		else if (event == MALLOC)

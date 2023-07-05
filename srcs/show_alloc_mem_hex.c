@@ -6,7 +6,7 @@
 /*   By: clorin <clorin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 21:35:34 by clorin            #+#    #+#             */
-/*   Updated: 2023/07/03 14:51:55 by clorin           ###   ########.fr       */
+/*   Updated: 2023/07/05 10:55:26 by clorin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static size_t	print_block_hex(t_block *block)
 			while (j < 16 && start_address + i + j < end_address)
 			{
 				ft_putstr(" ");
-				ft_putnbr_fd((size_t)*(start_address + j), 16, 1, false);
+				ft_putnbr_fd((size_t) *(start_address + j), 16, 1, false);
 				j++;
 			}
 			ft_putstr_fd("\n", 1);

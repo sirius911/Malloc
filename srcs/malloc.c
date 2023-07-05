@@ -6,7 +6,7 @@
 /*   By: clorin <clorin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 21:23:17 by clorin            #+#    #+#             */
-/*   Updated: 2023/07/03 13:22:08 by clorin           ###   ########.fr       */
+/*   Updated: 2023/07/05 10:44:16 by clorin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	*malloc_main(size_t size)
 		return (BLOCK_OFFSET(block));
 	heap = get_heap((const size_t)size);
 	if (!heap)
-		return ((void *)NULL);
+		return ((void *) NULL);
 	result = append_block(heap, size);
 	return (result);
 }

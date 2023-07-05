@@ -6,7 +6,7 @@
 /*   By: clorin <clorin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 14:44:09 by clorin            #+#    #+#             */
-/*   Updated: 2023/06/30 14:44:22 by clorin           ###   ########.fr       */
+/*   Updated: 2023/07/05 10:57:59 by clorin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ void	print(char *s)
 	write(1, s, strlen(s));
 }
 
-int		main(void)
+int	main(void)
 {
-	char *addr1;
-	char *addr2;
-	char *addr3;
+	char	*addr1;
+	char	*addr2;
+	char	*addr3;
 
 	addr1 = malloc(16 * M);
 	strcpy(addr1, "Bonjours\n");
