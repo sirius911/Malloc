@@ -28,9 +28,9 @@
 # define HEAP_OFFSET(start) ((void *)start + sizeof(t_heap))
 # define BLOCK_OFFSET(start) ((void *)start + sizeof(t_block))
 
-# define TINY_HEAP_ALLOCATION_SIZE (4 * getpagesize())
-# define TINY_BLOCK_SIZE (TINY_HEAP_ALLOCATION_SIZE / 128)
-# define SMALL_HEAP_ALLOCATION_SIZE (16 * getpagesize())
+# define TINY_HEAP_ALLOCATION_SIZE (8 * getpagesize())
+# define TINY_BLOCK_SIZE (TINY_HEAP_ALLOCATION_SIZE / 128) //
+# define SMALL_HEAP_ALLOCATION_SIZE (32 * getpagesize())
 # define SMALL_BLOCK_SIZE (SMALL_HEAP_ALLOCATION_SIZE / 128)
 
 typedef enum e_heap_group {

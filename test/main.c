@@ -174,7 +174,9 @@ static void realloc_large()
 	char    *addr2;
 	char    *addr3;
 
+	show_alloc_mem(true);
 	addr1 = (char *)malloc(1 * M);
+	show_alloc_mem(true);
 	strcpy(addr1, "Bonjours\n");
 	addr2 = (char *)malloc(16 * M);
 	show_alloc_mem(false);
@@ -189,13 +191,71 @@ static void realloc_large()
 	free(addr2);
 }
 
+static void test_hundred()
+{
+	// size_t size_heap, size_block;
+
+	// size_heap = sizeof(t_heap);
+	// size_block = sizeof(t_block);
+	// printf("sizeof(t_heap) = %ld ", size_heap);
+	// printf("sizeof(t_block) = %ld ", size_block);
+	// printf("\ttotal = %ld\n\n", size_heap + size_block);
+	// printf("TINY_BLOCK_SIZE = %d \n", TINY_BLOCK_SIZE);
+	// printf("TINY_HEAP_ALLOCATION_SIZE = %d \n", TINY_HEAP_ALLOCATION_SIZE);
+	// printf("100 * TINY_BLOCK_SIZE = %ld <= TINY_HEAP_ALLOCATION_SIZE = ", (100 * (TINY_BLOCK_SIZE + size_block) + size_heap));
+	// if ((100 * (TINY_BLOCK_SIZE + size_block) + size_heap) <= TINY_HEAP_ALLOCATION_SIZE)
+	// {
+	// 	printf(GREEN);
+	// 	printf("OK");
+	// }
+	// else
+	// {
+	// 	printf(RED);
+	// 	printf("KO");
+	// }
+	// printf(RESET);
+	// printf("\n\nSMALL_BLOCK_SIZE = %d ", SMALL_BLOCK_SIZE);
+	// printf("SMALL_HEAP_ALLOCATION_SIZE = %d \n", SMALL_HEAP_ALLOCATION_SIZE);
+	// printf("100 * SMALL_BLOCK_SIZE = %ld <= SMALL_HEAP_ALLOCATION_SIZE = ", (100 * (SMALL_BLOCK_SIZE + size_block) + size_heap));
+	// if ((100 * (SMALL_BLOCK_SIZE + size_block) + size_heap) <= SMALL_HEAP_ALLOCATION_SIZE)
+	// {
+	// 	printf(GREEN);
+	// 	printf("OK\n");
+	// }
+	// else
+	// {
+	// 	printf(RED);
+	// 	printf("KO\n");
+	// }
+	// printf(RESET);
+
+	// int amalloc = 1024;
+	// printf("\n for a malloc(%i) get_heap_groupe = %i\n", amalloc, get_heap_group(amalloc));
+	// printf("for a malloc(%i) get_heap_size = %li\n", amalloc, get_heap_size(amalloc));
+	char *a = (char*)malloc(1024);
+	show_alloc_mem(true);
+	char *b = (char*)malloc(1024);
+	show_alloc_mem(true);
+	char *c = (char*)malloc(1024);
+	show_alloc_mem(true);
+	free(b);
+	show_alloc_mem(true);
+	char *d = (char*)malloc(1024);
+	show_alloc_mem(true);
+	free(c);
+	show_alloc_mem(true);
+	char *e = (char*)malloc(1024);
+	show_alloc_mem(true);
+}
+
 int main(void)
 {
+	test_hundred();
 
-	// char *str = calloc(10, 255);
-	// show_alloc_mem(true);
-	// free(str);
-    // int nb_chaine = 10;
+	char *str = calloc(10, 255);
+	show_alloc_mem(true);
+	free(str);
+    int nb_chaine = 10;
 	print("*** malloc(0)***\n");
 	test_malloc_null();
 	print("****************\n");
@@ -204,10 +264,12 @@ int main(void)
 	print("****************\n");
 	print("\n***get_size()***\n");
 	test_malloc_getpagesize();
+
 	print("****************\n");
 	print("\n***limits()***\n");
     test_malloc_limits();
 	print("****************\n");
+
 	print("\n***malloc_free_size()***\n");
     test_malloc_free_size();
 	print("****************\n");
@@ -223,114 +285,17 @@ int main(void)
 	print("\n*** realloc_1() ***\n");
 	realloc_1();
 	print("****************\n");
+
 	print("\n*** realloc_large() ***\n");
 	realloc_large();
 	print("****************\n");
-
+	return 0;
 	print("*** E N D ***\n");
 	show_alloc_mem(true);
 
     char s[17] = "ABCDEFGHIJKLMNOPQ";
 
-    // char **tableau = (char**) malloc(sizeof(char*) * (nb_chaine+1));
-    // int i = 0;
-    // while (i < nb_chaine)
-    // {
-    //     char *str;
-    //     str = (char*)malloc(sizeof(char) * (17 + 1));
-    //     if (!str)
-    //         return(-1);
-    //     int j = i;
-    //     int c = 0;
-    //     while (c < 17)
-    //     {
-    //         str[c++] = s[j++];
-    //         if (j == 17)
-    //             j = 0;
-    //     }
-    //     str[c] = '\0';
-    //     tableau[i++] = str;
-    // }
-    // tableau[i] = NULL;
-	// show_mem();
-
-	// i=0;
-	// while(tableau[i])
-	// 	free(tableau[i++]);
-	
-	// // show_mem();
-
-	// free(tableau);
-	// show_mem();
-	// t_block	*block;
-    // t_heap *heap;
-    // i = 0;
-    // while(tableau[i])
-    // {
-    //     printf("tableau[%d] = %s\t",i, tableau[i]);
-    //     printf("&tableau[%d] = %p\t",i, &tableau[i]);
-        
-    //     search_ptr(&heap, &block, tableau[i]);
-    //     printf("&heap = %p", heap);
-    //     if (heap->group == TINY)
-	// 	    printf(" TINY ");
-    //     else if (heap->group == SMALL)
-    //         printf(" SMALL ");
-    //     else
-    //         printf(" LARGE ");
-    //     printf("group %d ", heap->group);
-    //     printf("free_size = %ld\n", heap->free_size);
-    //     printf("\t&block = %p data_size = %ld freed = %s", block, block->data_size, (block->freed == true)?"true ":"false ");
-    //     printf("\n");
-    //     i++;
-    // }
-	// for (int i=1; i <=389; i += 1)
-	// {
-	// 	ft_putnbr_fd(i, 10, 1);
-	// 	ft_putstr("# -> Malloc(10)\n");
-	// 	malloc(10);
-	// 	show_mem();
-	// }
-
-	// TEST 
-	// char *a = (char*)malloc(10);
-	// char *b = (char*)malloc(64);
-	// char *c = (char*)malloc(10);
- 	// char *d = (char*)malloc(1024);
-	// char *e = (char*)malloc(1024 * 32);
-	// char *f = (char*)malloc(1024 * 1024);
-	// char *g = (char*)malloc(1024 * 1024 * 16);
-	// char *h = (char*)malloc(1024 * 1024 * 128);
-	// show_alloc_mem(true);
-	// free(a);
-	// free(a);
-	// free(b);
-	// free(c);
-	// free(d);
-	// free(e);
-	// free(f);
-	// free(g);
-	// free(h);
-	// ft_putstr("*** après free ***\n");
-	// show_alloc_mem(true);
-	// ft_putstr("*** après g = malloc() ***\n");
-	// g = (char*)malloc(1024*1024);
-	// show_alloc_mem(true);
-	/*   TEST*/
-	
-	// char *str = (char*)malloc(100);
-	// ft_memset(str, 0x42,98);
-	// str[99] = '\0';
-
-	// char *rts = (char*)malloc(32);
-	// int i = 0;
-	// for (i; i < 32 ; i++)
-	// 	rts[i] = 'A';
-	// rts[i] = 0;
-	// show_alloc_mem_hex();
-
-	// free(rts);
-	// free(str);
+   
 
 	return (0);
 }

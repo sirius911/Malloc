@@ -12,6 +12,22 @@
 
 #include "malloc.h"
 
+static int nb_heap(t_heap_group group)
+{
+	int		nb;
+	t_heap	*heap;
+
+	nb = 0;
+	heap = g_heap;
+	while (heap)
+	{
+		if (heap->group == group)
+			nb++;
+		heap = heap->next;
+	}
+	return nb;
+}
+
 static void	delete_heap(t_heap *heap)
 {
 	if (heap->block_count)
@@ -20,10 +36,13 @@ static void	delete_heap(t_heap *heap)
 		heap->prev->next = heap->next;
 	if (heap->next)
 		heap->next->prev = heap->prev;
-	if (heap == g_heap)
-		g_heap = heap->next;
-	munmap(heap, heap->total_size);
-	log_report(MUNMAP, (void *)0, (size_t)heap);
+	if (nb_heap(heap->group) > 1)
+	{	
+		if (heap == g_heap)
+			g_heap = heap->next;
+		munmap(heap, heap->total_size);
+		log_report(MUNMAP, (void *)0, (size_t)heap);
+	}
 }
 
 static void	free_main(void *ptr)

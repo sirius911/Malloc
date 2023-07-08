@@ -1,0 +1,51 @@
+** Feature's testing **
+* Test de Malloc *
+Nous allons d'abord faire un premier programme de test qui n'utilise pas malloc, afin d'avoir une base de comparaison.
+
+Utilisez le fichier test0.c joint 
+ATTENTION : Si vous utilisez une machine virtuelle linux, assurez-vous que vous utilisez le binaire
+binaire time que vous pouvez obtenir avec apt (sudo apt install time), sinon
+sinon vous n'aurez pas accès à l'option -v.
+
+$> gcc -o test0 test0.c && /usr/bin/time -v ./test0
+
+Nous ajouterons ensuite un malloc et un write dans chaque allocation pour nous assurer que la page de mémoire est allouée dans la mémoire physique par le MMU.
+Le système n'allouera réellement la mémoire d'une page que si vous y écrivez.
+donc même si nous faisons un mmap plus grand que la requête malloc, cela ne modifiera pas la "page reclaims".
+
+Pour Linux => Major, Minor.
+
+$> gcc -o test1 test1.c
+$> /usr/bin/time -v ./test1
+
+Notre programme test1 demande 1024 fois 1024 octets, soit 1 million d'octets. 
+Nous pouvons donc vérifier en faisant la différence avec le programme test0
+en faisant la différence avec le programme test0 :
+
+- soit entre les lignes "maximum resident set size", on obtient un peu plus de 1Mbyte
+- soit la diff2rence des lignes "page reclaims" de test1 et test0
+ que l'on va multiplier par la valeur de getpagesize(3)
+
+Testons maintenant les deux programmes avec notre bibliothèque :
+
+./run_linux.sh /usr/bin/time -v ./test0
+./run_linux.sh /usr/bin/time -v ./test0
+
+calculer la différence de minor sur test1 et test0
+
+* Pre-allocated zones *
+Vérifier dans le code source que les zones pré-allouées pour les différentes tailles de malloc permettent de stocker au moins 100 fois plus de données que la taille du malloc.
+Vérifiez également que la taille des
+des zones est un multiple de getpagesize().
+
+* Tests of free *
+Nous ajouterons simplement un free à notre programme de test :
+
+$> cat test2.c
+
+$> gcc -o test2 test2.c
+
+Nous comparerons le nombre de "page reclaims" à celui de test0 et test1.
+S'il y a autant ou plus de "page reclaims" que dans test1, le free ne fonctionne pas.
+
+$>./run_linux.sh  /usr/bin/time -v ./test2

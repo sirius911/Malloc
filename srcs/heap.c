@@ -46,7 +46,12 @@ size_t	get_heap_size(size_t size)
 		return ((size_t)TINY_HEAP_ALLOCATION_SIZE);
 	else if (heap_group == SMALL)
 		return ((size_t)SMALL_HEAP_ALLOCATION_SIZE);
-	return (size + sizeof(t_heap) + sizeof(t_block));
+	size_t pagesize = getpagesize();
+	size_t heap_size = size + sizeof(t_heap) + sizeof(t_block);
+	size_t multiple = heap_size / pagesize;
+	if (heap_size % pagesize != 0)
+		multiple++;
+	return (multiple * pagesize);
 }
 
 static t_heap	*create_heap(t_heap_group group, size_t block_size)

@@ -62,7 +62,7 @@ static void	log_mmap(const char *event, int fd, size_t size, size_t result)
 	heap_size = get_heap_size(size);
 	heap_group = get_heap_group(size);
 	ft_putstr_fd(event, fd);
-	ft_putstr_fd(" a groupe of ", fd);
+	ft_putstr_fd(" a block of ", fd);
 	ft_putnbr_fd(size, 10, fd, true);
 	ft_putstr_fd(" bytes -> reserve ", fd);
 	if (heap_group == TINY)
