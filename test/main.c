@@ -6,7 +6,7 @@
 /*   By: clorin <clorin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 17:29:46 by clorin            #+#    #+#             */
-/*   Updated: 2023/07/03 15:12:57 by clorin           ###   ########.fr       */
+/*   Updated: 2023/07/09 11:28:21 by clorin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	print(char *s)
 {
 	write(1, s, strlen(s));
 }
-#include "./test.h"
+
 #include <stdio.h>
 #include <unistd.h>
 
@@ -191,112 +191,78 @@ static void realloc_large()
 	free(addr2);
 }
 
-static void test_hundred()
+static void info( int amalloc)
 {
-	// size_t size_heap, size_block;
+	size_t size_heap, size_block;
+	int page_size;
 
-	// size_heap = sizeof(t_heap);
-	// size_block = sizeof(t_block);
-	// printf("sizeof(t_heap) = %ld ", size_heap);
-	// printf("sizeof(t_block) = %ld ", size_block);
-	// printf("\ttotal = %ld\n\n", size_heap + size_block);
-	// printf("TINY_BLOCK_SIZE = %d \n", TINY_BLOCK_SIZE);
-	// printf("TINY_HEAP_ALLOCATION_SIZE = %d \n", TINY_HEAP_ALLOCATION_SIZE);
-	// printf("100 * TINY_BLOCK_SIZE = %ld <= TINY_HEAP_ALLOCATION_SIZE = ", (100 * (TINY_BLOCK_SIZE + size_block) + size_heap));
-	// if ((100 * (TINY_BLOCK_SIZE + size_block) + size_heap) <= TINY_HEAP_ALLOCATION_SIZE)
-	// {
-	// 	printf(GREEN);
-	// 	printf("OK");
-	// }
-	// else
-	// {
-	// 	printf(RED);
-	// 	printf("KO");
-	// }
-	// printf(RESET);
-	// printf("\n\nSMALL_BLOCK_SIZE = %d ", SMALL_BLOCK_SIZE);
-	// printf("SMALL_HEAP_ALLOCATION_SIZE = %d \n", SMALL_HEAP_ALLOCATION_SIZE);
-	// printf("100 * SMALL_BLOCK_SIZE = %ld <= SMALL_HEAP_ALLOCATION_SIZE = ", (100 * (SMALL_BLOCK_SIZE + size_block) + size_heap));
-	// if ((100 * (SMALL_BLOCK_SIZE + size_block) + size_heap) <= SMALL_HEAP_ALLOCATION_SIZE)
-	// {
-	// 	printf(GREEN);
-	// 	printf("OK\n");
-	// }
-	// else
-	// {
-	// 	printf(RED);
-	// 	printf("KO\n");
-	// }
-	// printf(RESET);
+	size_heap = sizeof(t_heap);
+	size_block = sizeof(t_block);
+	page_size = getpagesize();
 
-	// int amalloc = 1024;
-	// printf("\n for a malloc(%i) get_heap_groupe = %i\n", amalloc, get_heap_group(amalloc));
-	// printf("for a malloc(%i) get_heap_size = %li\n", amalloc, get_heap_size(amalloc));
-	char *a = (char*)malloc(1024);
-	show_alloc_mem(true);
-	char *b = (char*)malloc(1024);
-	show_alloc_mem(true);
-	char *c = (char*)malloc(1024);
-	show_alloc_mem(true);
-	free(b);
-	show_alloc_mem(true);
-	char *d = (char*)malloc(1024);
-	show_alloc_mem(true);
-	free(c);
-	show_alloc_mem(true);
-	char *e = (char*)malloc(1024);
-	show_alloc_mem(true);
+	printf("***************************\n");
+	printf("*       %sS I Z E O F%s       *\n", BLUE, RESET);
+	printf("***************************\n");
+	printf("*  t_heap   *   t_block   *\n");
+	printf("***************************\n");
+	printf("*   %s%ld%s      *     %s%ld%s      *\n", BLUE, size_heap, RESET, BLUE, size_block, RESET);
+	printf("***************************\n");
+	printf("*           %s%ld%s            *\n", BLUE,size_heap + size_block, RESET);
+	printf("***************************\n\n");
+
+	printf("-------------\n");
+	printf("| %sPage Size%s |\n", BLUE, RESET);
+	printf("|-----------|\n");
+	printf("|   %s%d%s    |\n", YELLOW, page_size, RESET);
+	printf("-------------\n");
+
+	printf("-------------------------------------------------------------\n");
+	printf("|         | BLOCK SIZE | HEAP ALLOCATION SIZE |  x 100 |    |\n");
+	printf("|------------------------------------------------------|----|\n");
+	printf("|  TINY   |    %s%d%s     |        %s%d%s         | %s%ld%s  | ", BLUE,TINY_BLOCK_SIZE, RESET,BLUE, TINY_HEAP_ALLOCATION_SIZE, RESET,BLUE, (100 * (TINY_BLOCK_SIZE + size_block) + size_heap), RESET);
+	if ((100 * (TINY_BLOCK_SIZE + size_block) + size_heap) <= TINY_HEAP_ALLOCATION_SIZE)
+	{
+		printf(GREEN);
+		printf("OK");
+	}
+	else
+	{
+		printf(RED);
+		printf("KO");
+	}
+	printf(RESET);
+	printf(" |\n|------------------------------------------------------|----|\n");
+	printf("|  SMALL  |   %s%d%s     |       %s%d%s         | %s%ld%s | ", YELLOW, SMALL_BLOCK_SIZE, RESET, YELLOW, SMALL_HEAP_ALLOCATION_SIZE, RESET, YELLOW, (100 * (SMALL_BLOCK_SIZE + size_block) + size_heap), RESET);
+	if ((100 * (TINY_BLOCK_SIZE + size_block) + size_heap) <= TINY_HEAP_ALLOCATION_SIZE)
+	{
+		printf(GREEN);
+		printf("OK");
+	}
+	else
+	{
+		printf(RED);
+		printf("KO");
+	}
+	printf(RESET);
+	printf(" |\n-------------------------------------------------------------\n");
+	
+	printf("\nfor a malloc(%s%d%s) get_heap_groupe = ", BLUE, amalloc, RESET);
+	if (get_heap_group(amalloc) == 0)
+		printf("%sTINY%s", GREEN, RESET);
+	else if (get_heap_group(amalloc) == 1)
+		printf("%sSMALL%s", GREEN, RESET);
+	else
+		printf("%sLARGE%s", GREEN, RESET);
+	printf("-> get_heap_size = %s%ld%s [ %s%ld%s x %d ]\n", YELLOW, get_heap_size(amalloc), RESET, MAGENTA, (get_heap_size(amalloc) / page_size), RESET, page_size);
 }
 
-int main(void)
+int main(int argc, char **argv)
 {
-	test_hundred();
+	int amalloc = 1024 * 1024;
 
-	char *str = calloc(10, 255);
-	show_alloc_mem(true);
-	free(str);
-    int nb_chaine = 10;
-	print("*** malloc(0)***\n");
-	test_malloc_null();
-	print("****************\n");
-	print("\n*** malloc(1)***\n");
-	test_malloc_one();
-	print("****************\n");
-	print("\n***get_size()***\n");
-	test_malloc_getpagesize();
-
-	print("****************\n");
-	print("\n***limits()***\n");
-    test_malloc_limits();
-	print("****************\n");
-
-	print("\n***malloc_free_size()***\n");
-    test_malloc_free_size();
-	print("****************\n");
-	print("\n***realloc()***\n");
-	test_realloc_mix();
-	print("****************\n");
-	print("\n***realloc_null_ptr()***\n");
-	realloc_null_ptr();
-	print("****************\n");
-	print("\n*** realloc_0() ***\n");
-	realloc_0();
-	print("****************\n");
-	print("\n*** realloc_1() ***\n");
-	realloc_1();
-	print("****************\n");
-
-	print("\n*** realloc_large() ***\n");
-	realloc_large();
-	print("****************\n");
-	return 0;
-	print("*** E N D ***\n");
-	show_alloc_mem(true);
-
-    char s[17] = "ABCDEFGHIJKLMNOPQ";
-
-   
-
+	if (argc > 1)
+		amalloc = atoi(argv[1]);
+	info(amalloc); 
 	return (0);
 }
 

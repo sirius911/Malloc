@@ -6,7 +6,7 @@
 /*   By: clorin <clorin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 20:18:36 by clorin            #+#    #+#             */
-/*   Updated: 2023/07/03 13:40:14 by clorin           ###   ########.fr       */
+/*   Updated: 2023/07/09 11:34:57 by clorin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,18 @@ static t_heap	*get_available_heap(const t_heap *list_start,
 size_t	get_heap_size(size_t size)
 {
 	t_heap_group	heap_group;
+	size_t			pagesize;
+	size_t			heap_size;
+	size_t			multiple;
 
 	heap_group = get_heap_group(size);
 	if (heap_group == TINY)
 		return ((size_t)TINY_HEAP_ALLOCATION_SIZE);
 	else if (heap_group == SMALL)
 		return ((size_t)SMALL_HEAP_ALLOCATION_SIZE);
-	size_t pagesize = getpagesize();
-	size_t heap_size = size + sizeof(t_heap) + sizeof(t_block);
-	size_t multiple = heap_size / pagesize;
+	pagesize = getpagesize();
+	heap_size = size + sizeof(t_heap) + sizeof(t_block);
+	multiple = heap_size / pagesize;
 	if (heap_size % pagesize != 0)
 		multiple++;
 	return (multiple * pagesize);

@@ -6,13 +6,13 @@
 /*   By: clorin <clorin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 21:12:41 by clorin            #+#    #+#             */
-/*   Updated: 2023/07/05 10:39:22 by clorin           ###   ########.fr       */
+/*   Updated: 2023/07/09 12:44:54 by clorin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-static int nb_heap(t_heap_group group)
+static int	nb_heap(t_heap_group group)
 {
 	int		nb;
 	t_heap	*heap;
@@ -25,7 +25,7 @@ static int nb_heap(t_heap_group group)
 			nb++;
 		heap = heap->next;
 	}
-	return nb;
+	return (nb);
 }
 
 static void	delete_heap(t_heap *heap)
