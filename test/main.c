@@ -258,7 +258,7 @@ static void info( int amalloc)
 
 int main(int argc, char **argv)
 {
-	int amalloc = 1024 * 1024;
+	int amalloc = 1024;
 
 	if (argc > 1)
 		amalloc = atoi(argv[1]);
