@@ -191,6 +191,24 @@ static void realloc_large()
 	free(addr2);
 }
 
+static void hex_demo(void)
+{
+	char	*str1;
+	char	*str2;
+	char	*str3;
+
+	str1 = (char *) malloc(5);
+	if (str1)
+		strcpy(str1, "abcd");
+	str2 = (char *) malloc(30);
+	str3 = (char *) malloc(11);
+	if (str3)
+		strcpy(str3, "0123456789");
+	free(str2);
+	show_alloc_mem_hex();
+	free(str1);
+	free(str3);
+}
 static void info( int amalloc)
 {
 	size_t size_heap, size_block;
@@ -258,11 +276,23 @@ static void info( int amalloc)
 
 int main(int argc, char **argv)
 {
-	int amalloc = 1024;
+	int amalloc;
 
-	if (argc > 1)
-		amalloc = atoi(argv[1]);
-	info(amalloc); 
+	amalloc = 1024;
+	if (argc == 2)
+	{
+		if (strcmp(argv[1], "hex") == 0)
+			hex_demo();
+		else
+		{
+			amalloc = atoi(argv[1]);
+			if (amalloc == 0)
+				amalloc = 1024;
+			info(amalloc);
+		}
+	}
+	else
+		printf("Just One arg [int | 'hex'] !\n");
 	return (0);
 }
 

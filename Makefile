@@ -81,7 +81,7 @@ test:
 		@echo -n "Compile $(TEST_SRCS)"
 		@gcc -o main_test test/main.c $(SRCS) $(INCLUDES)
 		@echo " ... Done"
-		./main_test
+		./main_test 1024
 
 re:		fclean all
 
